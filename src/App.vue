@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="min-h-screen bg-gray-50">
+  <div id="app" class="min-h-screen bg-blue-50 dark:bg-gray-900 transition-colors duration-200">
     <!-- Status Indicator -->
     <div v-if="!isOnline" class="status-offline">
       📡 Offline
@@ -13,7 +13,7 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
           <!-- Logo -->
-          <router-link to="/" class="flex items-center space-x-2 text-xl font-semibold text-gray-900">
+          <router-link to="/" class="flex items-center space-x-2 text-xl font-semibold text-black dark:text-gray-100">
             <span>🩺</span>
             <span>Doctor2GO</span>
           </router-link>
@@ -22,32 +22,42 @@
           <div class="hidden md:flex items-center space-x-8">
             <router-link 
               to="/" 
-              class="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors"
-              :class="{ 'text-blue-600': $route.path === '/' }"
+              class="text-black dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-100 px-3 py-2 text-sm font-medium transition-colors"
+              :class="{ 'text-blue-600 dark:text-blue-400': $route.path === '/' }"
             >
               Dashboard
             </router-link>
             <router-link 
               to="/consultation" 
-              class="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors"
-              :class="{ 'text-blue-600': $route.path === '/consultation' }"
+              class="text-black dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-100 px-3 py-2 text-sm font-medium transition-colors"
+              :class="{ 'text-blue-600 dark:text-blue-400': $route.path === '/consultation' }"
             >
               New Consultation
             </router-link>
             <router-link 
               to="/verify" 
-              class="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors"
-              :class="{ 'text-blue-600': $route.path === '/verify' }"
+              class="text-black dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-100 px-3 py-2 text-sm font-medium transition-colors"
+              :class="{ 'text-blue-600 dark:text-blue-400': $route.path === '/verify' }"
             >
               Verify
             </router-link>
             <router-link 
               to="/reports" 
-              class="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors"
-              :class="{ 'text-blue-600': $route.path === '/reports' }"
+              class="text-black dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-100 px-3 py-2 text-sm font-medium transition-colors"
+              :class="{ 'text-blue-600 dark:text-blue-400': $route.path === '/reports' }"
             >
               Reports
             </router-link>
+            
+            <!-- Theme Toggle Button -->
+            <button
+              @click="toggleTheme"
+              class="theme-toggle"
+              :title="isDark() ? 'Switch to light mode' : 'Switch to dark mode'"
+            >
+              <span v-if="isDark()">☀️</span>
+              <span v-else>🌙</span>
+            </button>
           </div>
           
           <!-- Stats Badge -->
@@ -55,8 +65,8 @@
             {{ consultationStore.totalConsultations }} Cases
           </div>
           
-          <!-- Mobile Menu Button -->
-          <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden p-2">
+                    <!-- Mobile Menu Button -->
+          <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden p-2 text-black dark:text-gray-300">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
             </svg>
@@ -65,10 +75,17 @@
         
         <!-- Mobile Menu -->
         <div v-if="mobileMenuOpen" class="md:hidden py-4 space-y-2">
-          <router-link to="/" class="block px-3 py-2 text-gray-600 hover:text-gray-900">Dashboard</router-link>
-          <router-link to="/consultation" class="block px-3 py-2 text-gray-600 hover:text-gray-900">New Consultation</router-link>
-          <router-link to="/verify" class="block px-3 py-2 text-gray-600 hover:text-gray-900">Verify</router-link>
-          <router-link to="/reports" class="block px-3 py-2 text-gray-600 hover:text-gray-900">Reports</router-link>
+          <router-link to="/" class="block px-3 py-2 text-black dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-100">Dashboard</router-link>
+          <router-link to="/consultation" class="block px-3 py-2 text-black dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-100">New Consultation</router-link>
+          <router-link to="/verify" class="block px-3 py-2 text-black dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-100">Verify</router-link>
+          <router-link to="/reports" class="block px-3 py-2 text-black dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-100">Reports</router-link>
+          <button
+            @click="toggleTheme"
+            class="block w-full text-left px-3 py-2 text-black dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-100"
+          >
+            <span v-if="isDark()">☀️ Light Mode</span>
+            <span v-else>🌙 Dark Mode</span>
+          </button>
         </div>
       </div>
     </nav>
@@ -92,9 +109,11 @@
 import { ref, onMounted } from 'vue'
 import { useConsultationStore } from '@/stores/consultation'
 import { useStorageStore } from '@/stores/storage'
+import { useTheme } from '@/composables/useTheme'
 
 const consultationStore = useConsultationStore()
 const storageStore = useStorageStore()
+const { toggleTheme, isDark, initTheme } = useTheme()
 
 const isOnline = ref(navigator.onLine)
 const mobileMenuOpen = ref(false)
@@ -104,6 +123,9 @@ const syncStatus = ref({
 })
 
 onMounted(() => {
+  // Initialize theme
+  initTheme()
+  
   // Initialize stores
   consultationStore.loadFromStorage()
   

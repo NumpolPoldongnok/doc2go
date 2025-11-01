@@ -1,10 +1,10 @@
 <template>
-  <div class="bg-white rounded-lg border border-gray-200 p-6">
-    <h3 class="text-lg font-medium text-gray-900 mb-4">Certificate Generation</h3>
+  <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Certificate Generation</h3>
     
     <div class="space-y-4">
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Certificate Number</label>
+        <label class="block text-sm font-medium text-black dark:text-gray-200 mb-1">Certificate Number</label>
         <div class="flex gap-2">
           <input
             v-model="certificateNumber"
@@ -22,11 +22,11 @@
         </div>
       </div>
 
-      <div v-if="certificateNumber" class="mt-6 p-4 border border-gray-200 rounded-lg">
-        <h4 class="font-medium mb-2">Certificate Preview</h4>
-        <p>Certificate No: {{ certificateNumber }}</p>
-        <p>Patient: {{ consultation?.patient?.fullName || 'N/A' }}</p>
-        <p>Date: {{ new Date().toLocaleDateString() }}</p>
+      <div v-if="certificateNumber" class="mt-6 p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-700">
+        <h4 class="font-medium mb-2 text-gray-900 dark:text-white">Certificate Preview</h4>
+        <p class="text-black dark:text-gray-200">Certificate No: {{ certificateNumber }}</p>
+        <p class="text-black dark:text-gray-200">Patient: {{ consultation?.patient?.fullName || 'N/A' }}</p>
+        <p class="text-black dark:text-gray-200">Date: {{ new Date().toLocaleDateString() }}</p>
       </div>
     </div>
   </div>

@@ -6,6 +6,7 @@ export default {
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
+  darkMode: 'class', // เปิดใช้งาน dark mode แบบ class-based
   theme: {
     extend: {
       colors: {
@@ -54,6 +55,19 @@ export default {
           "base-100": "#ffffff",
           "base-200": "#f9fafb",
           "base-300": "#f3f4f6",
+          "info": "#3b82f6",
+          "success": "#10b981",
+          "warning": "#f59e0b",
+          "error": "#ef4444",
+        },
+        dark: {
+          "primary": "#3b82f6",
+          "secondary": "#10b981", 
+          "accent": "#f59e0b",
+          "neutral": "#1f2937",
+          "base-100": "#111827",
+          "base-200": "#1f2937",
+          "base-300": "#374151",
           "info": "#3b82f6",
           "success": "#10b981",
           "warning": "#f59e0b",

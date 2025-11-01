@@ -1,17 +1,17 @@
 <template>
-  <div class="bg-white rounded-lg border border-gray-200 p-6">
-    <h3 class="text-lg font-medium text-gray-900 mb-4">Billing & Services</h3>
+  <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Billing & Services</h3>
     
     <div class="space-y-6">
       <!-- Available Services -->
       <div>
-        <h4 class="font-medium mb-3">Available Services</h4>
+        <h4 class="font-medium mb-3 text-gray-900 dark:text-white">Available Services</h4>
         <div class="space-y-2">
           <div v-for="service in availableServices" :key="service.id" 
-               class="flex justify-between items-center p-3 border rounded hover:bg-gray-50">
+               class="flex justify-between items-center p-3 border border-gray-200 dark:border-gray-700 rounded hover:bg-gray-50 dark:hover:bg-gray-700 bg-white dark:bg-gray-800">
             <div>
-              <span class="font-medium">{{ service.name }}</span>
-              <span class="text-sm text-gray-500 ml-2">{{ service.description }}</span>
+              <span class="font-medium text-black dark:text-white">{{ service.name }}</span>
+              <span class="text-sm text-gray-600 dark:text-gray-400 ml-2">{{ service.description }}</span>
             </div>
             <div class="flex items-center gap-3">
               <span class="font-mono">{{ formatPrice(service.price) }}</span>

@@ -45,7 +45,7 @@
     <div class="container mx-auto px-4 mb-12">
       <h2 class="text-2xl font-bold mb-6">Quick Actions</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <router-link to="/consultation" class="card bg-primary text-primary-content hover:shadow-xl transition-shadow">
+        <router-link to="/consultation" class="card bg-accent text-accent-content hover:shadow-xl transition-shadow">
           <div class="card-body items-center text-center">
             <div class="text-4xl mb-2">🩺</div>
             <h3 class="card-title">New Consultation</h3>
