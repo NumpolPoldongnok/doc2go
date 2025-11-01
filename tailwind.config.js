@@ -9,9 +9,36 @@ export default {
   theme: {
     extend: {
       colors: {
-        'doctor-blue': '#0066cc',
-        'doctor-green': '#00cc66',
-        'medical-red': '#cc0000',
+        primary: {
+          50: '#eff6ff',
+          100: '#dbeafe',
+          500: '#3b82f6',
+          600: '#2563eb',
+          700: '#1d4ed8',
+        },
+        gray: {
+          50: '#f9fafb',
+          100: '#f3f4f6',
+          200: '#e5e7eb',
+          300: '#d1d5db',
+          400: '#9ca3af',
+          500: '#6b7280',
+          600: '#4b5563',
+          700: '#374151',
+          800: '#1f2937',
+          900: '#111827',
+        }
+      },
+      fontFamily: {
+        sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+      },
+      borderRadius: {
+        'xl': '0.75rem',
+        '2xl': '1rem',
+      },
+      spacing: {
+        '18': '4.5rem',
+        '88': '22rem',
       }
     },
   },
@@ -19,20 +46,20 @@ export default {
   daisyui: {
     themes: [
       {
-        doctor2go: {
-          "primary": "#0066cc",
-          "secondary": "#00cc66", 
+        minimal: {
+          "primary": "#3b82f6",
+          "secondary": "#10b981", 
           "accent": "#f59e0b",
-          "neutral": "#3d4451",
+          "neutral": "#374151",
           "base-100": "#ffffff",
-          "info": "#3abff8",
-          "success": "#36d399",
-          "warning": "#fbbd23",
-          "error": "#f87272",
+          "base-200": "#f9fafb",
+          "base-300": "#f3f4f6",
+          "info": "#3b82f6",
+          "success": "#10b981",
+          "warning": "#f59e0b",
+          "error": "#ef4444",
         },
       },
-      "light",
-      "dark",
     ],
   },
 }

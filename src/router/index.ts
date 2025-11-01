@@ -1,10 +1,10 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router'
 import Home from '@/views/Home.vue'
 import Consultation from '@/views/Consultation.vue'
 import Verify from '@/views/Verify.vue'
 import Reports from '@/views/Reports.vue'
 
-const routes = [
+const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'Home',
@@ -36,8 +36,8 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
-  document.title = to.meta.title || 'Doctor2GO'
+router.beforeEach((to, _from, next) => {
+  document.title = (to.meta?.title as string) || 'Doctor2GO'
   next()
 })
 

@@ -3,11 +3,82 @@ import { ref, computed } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import { format } from 'date-fns'
 
+// Types
+interface Patient {
+  fullName: string
+  gender: string
+  age: string
+  nationality: string
+  passportNo: string
+  hotel: string
+  roomNo: string
+  contactNo: string
+  email: string
+}
+
+interface MedicalAdvice {
+  fitToTravel: boolean
+  fitToFly: boolean
+  unfitToFlyUntil: string
+  fitToWork: boolean
+  unfitToWorkDays: string
+  hospitalAdmission: boolean
+}
+
+interface Medical {
+  diagnosis: string
+  icd10: string
+  cause: string
+  treatment: string
+  medication: string
+  procedures: string[]
+  advice: MedicalAdvice
+  remarks: string
+  attachments: string[]
+}
+
+interface Certificate {
+  number: string
+  qrCode: string
+  digitalSignature: string
+  generatedAt: string | null
+}
+
+interface Service {
+  id: string
+  name: string
+  price: number
+  quantity: number
+}
+
+interface Billing {
+  services: Service[]
+  subtotal: number
+  vat: number
+  total: number
+  paymentMethod: string
+  receiptNumber: string
+  receiptQrCode: string
+}
+
+interface Consultation {
+  id: string
+  caseId: string
+  createdAt: string
+  updatedAt: string
+  status: 'draft' | 'completed' | 'cancelled'
+  completedAt?: string
+  patient: Patient
+  medical: Medical
+  certificate: Certificate
+  billing: Billing
+}
+
 export const useConsultationStore = defineStore('consultation', () => {
   // State
-  const consultations = ref([])
-  const currentConsultation = ref(null)
-  const currentStep = ref(1)
+  const consultations = ref<Consultation[]>([])
+  const currentConsultation = ref<Consultation | null>(null)
+  const currentStep = ref<number>(1)
   
   // Getters
   const totalConsultations = computed(() => consultations.value.length)
@@ -95,7 +166,7 @@ export const useConsultationStore = defineStore('consultation', () => {
     currentConsultation.value.updatedAt = new Date().toISOString()
     
     const existingIndex = consultations.value.findIndex(
-      c => c.id === currentConsultation.value.id
+      c => c.id === currentConsultation.value!.id
     )
     
     if (existingIndex !== -1) {
@@ -128,13 +199,13 @@ export const useConsultationStore = defineStore('consultation', () => {
     }
   }
   
-  const goToStep = (step) => {
+  const goToStep = (step: number) => {
     if (step >= 1 && step <= 4) {
       currentStep.value = step
     }
   }
   
-  const loadConsultation = (id) => {
+  const loadConsultation = (id: string) => {
     const consultation = consultations.value.find(c => c.id === id)
     if (consultation) {
       currentConsultation.value = { ...consultation }
@@ -142,7 +213,7 @@ export const useConsultationStore = defineStore('consultation', () => {
     }
   }
   
-  const deleteConsultation = (id) => {
+  const deleteConsultation = (id: string) => {
     consultations.value = consultations.value.filter(c => c.id !== id)
     saveToStorage()
   }
@@ -174,7 +245,7 @@ export const useConsultationStore = defineStore('consultation', () => {
     }
   }
   
-  const importData = (data) => {
+  const importData = (data: any) => {
     if (data.consultations && Array.isArray(data.consultations)) {
       consultations.value = data.consultations
       saveToStorage()

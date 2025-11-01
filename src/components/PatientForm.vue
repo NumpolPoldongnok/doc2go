@@ -1,49 +1,46 @@
 <template>
   <div class="space-y-6">
-    <h2 class="text-2xl font-bold mb-6">👤 Patient Information</h2>
+    <div class="mb-8">
+      <h2 class="text-2xl font-semibold text-gray-900 mb-2">Patient Information</h2>
+      <p class="text-gray-600">Enter patient details or use quick fill options</p>
+    </div>
     
-    <!-- QR Scanner / Auto-fill Section -->
-    <div class="card bg-base-100 border-2 border-dashed border-primary">
-      <div class="card-body">
-        <h3 class="card-title text-primary">Quick Fill Options</h3>
-        <div class="flex flex-wrap gap-4">
-          <button @click="scanPassport" class="btn btn-outline btn-primary">
-            📷 Scan Passport
-          </button>
-          <button @click="scanHotelQR" class="btn btn-outline btn-secondary">
-            🏨 Scan Hotel QR
-          </button>
-          <button @click="importFromPMS" class="btn btn-outline btn-accent">
-            💻 Import from PMS
-          </button>
-        </div>
+    <!-- Quick Fill Options -->
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      <h3 class="text-lg font-medium text-blue-900 mb-3">Quick Fill Options</h3>
+      <div class="flex flex-wrap gap-3">
+        <button @click="scanPassport" class="btn-minimal-outline">
+          📷 Scan Passport
+        </button>
+        <button @click="scanHotelQR" class="btn-minimal-outline">
+          🏨 Hotel QR
+        </button>
+        <button @click="importFromPMS" class="btn-minimal-outline">
+          💻 Import PMS
+        </button>
       </div>
     </div>
 
     <!-- Patient Details Form -->
-    <div class="medical-form">
+    <div class="bg-white border border-gray-200 rounded-lg p-6">
       <!-- Basic Information -->
-      <div class="field-group">
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Full Name *</span>
-          </label>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="form-field">
+          <label class="field-label">Full Name *</label>
           <input 
             v-model="localPatient.fullName"
             type="text" 
             placeholder="Enter patient's full name"
-            class="input input-bordered w-full"
+            class="field-input"
             required
           />
         </div>
         
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Gender *</span>
-          </label>
+        <div class="form-field">
+          <label class="field-label">Gender *</label>
           <select 
             v-model="localPatient.gender"
-            class="select select-bordered w-full"
+            class="field-input"
             required
           >
             <option value="">Select Gender</option>
@@ -54,29 +51,25 @@
         </div>
       </div>
 
-      <div class="field-group">
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Age *</span>
-          </label>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="form-field">
+          <label class="field-label">Age *</label>
           <input 
             v-model="localPatient.age"
             type="number" 
             placeholder="Age"
-            class="input input-bordered w-full"
+            class="field-input"
             min="0"
             max="120"
             required
           />
         </div>
         
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Nationality</span>
-          </label>
+        <div class="form-field">
+          <label class="field-label">Nationality</label>
           <select 
             v-model="localPatient.nationality"
-            class="select select-bordered w-full"
+            class="field-input"
           >
             <option value="">Select Nationality</option>
             <option v-for="country in countries" :key="country" :value="country">
@@ -87,111 +80,116 @@
       </div>
 
       <!-- Identification -->
-      <div class="field-group">
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Passport Number</span>
-          </label>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="form-field">
+          <label class="field-label">Passport Number</label>
           <input 
             v-model="localPatient.passportNo"
             type="text" 
             placeholder="Passport number"
-            class="input input-bordered w-full font-mono"
+            class="field-input font-mono"
           />
         </div>
         
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Contact Number</span>
-          </label>
+        <div class="form-field">
+          <label class="field-label">Contact Number</label>
           <input 
             v-model="localPatient.contactNo"
             type="tel" 
             placeholder="Phone number"
-            class="input input-bordered w-full"
+            class="field-input"
           />
         </div>
       </div>
 
       <!-- Accommodation -->
-      <div class="field-group">
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Hotel / Accommodation</span>
-          </label>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="form-field">
+          <label class="field-label">Hotel / Accommodation</label>
           <input 
             v-model="localPatient.hotel"
             type="text" 
             placeholder="Hotel name or address"
-            class="input input-bordered w-full"
+            class="field-input"
           />
         </div>
         
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Room Number</span>
-          </label>
+        <div class="form-field">
+          <label class="field-label">Room Number</label>
           <input 
             v-model="localPatient.roomNo"
             type="text" 
             placeholder="Room number"
-            class="input input-bordered w-full"
+            class="field-input"
           />
         </div>
       </div>
 
       <!-- Contact Information -->
-      <div class="form-control">
-        <label class="label">
-          <span class="label-text">Email Address</span>
-        </label>
+      <div class="form-field">
+        <label class="field-label">Email Address</label>
         <input 
           v-model="localPatient.email"
           type="email" 
           placeholder="email@example.com"
-          class="input input-bordered w-full"
+          class="field-input"
         />
       </div>
     </div>
 
     <!-- Patient ID Display -->
-    <div class="alert alert-info" v-if="patientId">
-      <div class="flex items-center">
-        <span class="font-mono font-bold">Patient ID: {{ patientId }}</span>
-        <button @click="copyPatientId" class="btn btn-sm btn-ghost ml-4">
+    <div class="bg-green-50 border border-green-200 rounded-lg p-4" v-if="patientId">
+      <div class="flex items-center justify-between">
+        <span class="font-mono font-medium text-green-800">Patient ID: {{ patientId }}</span>
+        <button @click="copyPatientId" class="btn-minimal-outline text-sm">
           📋 Copy
         </button>
       </div>
     </div>
 
     <!-- Validation Summary -->
-    <div class="card bg-warning/10 border border-warning" v-if="validationErrors.length > 0">
-      <div class="card-body">
-        <h4 class="font-bold text-warning">Please complete the following:</h4>
-        <ul class="list-disc list-inside text-sm">
-          <li v-for="error in validationErrors" :key="error" class="text-warning">
-            {{ error }}
-          </li>
-        </ul>
-      </div>
+    <div class="bg-amber-50 border border-amber-200 rounded-lg p-4" v-if="validationErrors.length > 0">
+      <h4 class="font-medium text-amber-800 mb-2">Please complete the following:</h4>
+      <ul class="list-disc list-inside text-sm text-amber-700 space-y-1">
+        <li v-for="error in validationErrors" :key="error">
+          {{ error }}
+        </li>
+      </ul>
     </div>
   </div>
 </template>
 
-<script setup>
-import { ref, computed, watch, onMounted } from 'vue'
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue'
 
-const props = defineProps({
-  patient: {
-    type: Object,
-    default: () => ({})
-  }
+interface Patient {
+  fullName: string
+  gender: string
+  age: string
+  nationality: string
+  passportNo: string
+  hotel: string
+  roomNo: string
+  contactNo: string
+  email: string
+}
+
+interface Props {
+  patient?: Partial<Patient>
+}
+
+interface Emits {
+  'update:patient': [patient: Patient]
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  patient: () => ({})
 })
 
-const emit = defineEmits(['update:patient'])
+const emit = defineEmits<Emits>()
 
 // Local reactive copy of patient data
-const localPatient = ref({
+const localPatient = ref<Patient>({
   fullName: '',
   gender: '',
   age: '',
@@ -205,26 +203,26 @@ const localPatient = ref({
 })
 
 // Countries list (simplified)
-const countries = [
+const countries: string[] = [
   'Thailand', 'United States', 'United Kingdom', 'Germany', 'France',
   'Japan', 'China', 'South Korea', 'Singapore', 'Malaysia', 'Australia',
   'Canada', 'India', 'Philippines', 'Vietnam', 'Indonesia', 'Other'
 ]
 
 // Computed patient ID
-const patientId = computed(() => {
+const patientId = computed((): string | null => {
   if (localPatient.value.fullName && localPatient.value.passportNo) {
     const name = localPatient.value.fullName.substring(0, 3).toUpperCase()
-    const passport = localPatient.value.passportNo.substring(-4)
-    const timestamp = Date.now().toString().substring(-4)
+    const passport = localPatient.value.passportNo.slice(-4)
+    const timestamp = Date.now().toString().slice(-4)
     return `P-${name}${passport}${timestamp}`
   }
   return null
 })
 
 // Validation
-const validationErrors = computed(() => {
-  const errors = []
+const validationErrors = computed((): string[] => {
+  const errors: string[] = []
   
   if (!localPatient.value.fullName) {
     errors.push('Full name is required')
@@ -238,7 +236,8 @@ const validationErrors = computed(() => {
     errors.push('Age is required')
   }
   
-  if (localPatient.value.age && (localPatient.value.age < 0 || localPatient.value.age > 120)) {
+  const ageNum = parseInt(localPatient.value.age)
+  if (localPatient.value.age && (ageNum < 0 || ageNum > 120)) {
     errors.push('Age must be between 0 and 120')
   }
   
@@ -246,9 +245,9 @@ const validationErrors = computed(() => {
 })
 
 // Methods
-const scanPassport = () => {
+const scanPassport = (): void => {
   // Mock passport scanning
-  const mockPassportData = {
+  const mockPassportData: Partial<Patient> = {
     fullName: 'John Smith',
     gender: 'Male',
     age: '35',
@@ -260,9 +259,9 @@ const scanPassport = () => {
   alert('✅ Passport scanned successfully!')
 }
 
-const scanHotelQR = () => {
+const scanHotelQR = (): void => {
   // Mock hotel QR scanning
-  const mockHotelData = {
+  const mockHotelData: Partial<Patient> = {
     hotel: 'Grand Palace Hotel Bangkok',
     roomNo: '1205',
     contactNo: '+66-2-123-4567'
@@ -272,9 +271,9 @@ const scanHotelQR = () => {
   alert('✅ Hotel information imported!')
 }
 
-const importFromPMS = () => {
+const importFromPMS = (): void => {
   // Mock PMS import
-  const mockPMSData = {
+  const mockPMSData: Partial<Patient> = {
     fullName: 'Maria Garcia',
     gender: 'Female',
     age: '28',
@@ -290,9 +289,15 @@ const importFromPMS = () => {
   alert('✅ Data imported from PMS system!')
 }
 
-const copyPatientId = () => {
-  navigator.clipboard.writeText(patientId.value)
-  alert('Patient ID copied to clipboard!')
+const copyPatientId = async (): Promise<void> => {
+  if (patientId.value) {
+    try {
+      await navigator.clipboard.writeText(patientId.value)
+      alert('Patient ID copied to clipboard!')
+    } catch (err) {
+      console.error('Failed to copy:', err)
+    }
+  }
 }
 
 // Watch for changes and emit to parent
@@ -308,8 +313,57 @@ watch(
 watch(
   () => props.patient,
   (newPatient) => {
-    Object.assign(localPatient.value, newPatient)
+    if (newPatient) {
+      Object.assign(localPatient.value, newPatient)
+    }
   },
   { immediate: true }
 )
 </script>
+
+<style scoped>
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.field-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.field-input {
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  transition: border-color 0.2s;
+  background-color: white;
+}
+
+.field-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.btn-minimal-outline {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  background-color: white;
+  color: #374151;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-minimal-outline:hover {
+  border-color: #3b82f6;
+  color: #3b82f6;
+  background-color: #f8fafc;
+}
+</style>

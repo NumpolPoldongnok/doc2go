@@ -1,51 +1,45 @@
 <template>
   <div class="space-y-6">
-    <h2 class="text-2xl font-bold mb-6">🏥 Medical Record</h2>
+    <div class="mb-8">
+      <h2 class="text-2xl font-semibold text-gray-900 mb-2">Medical Record</h2>
+      <p class="text-gray-600">Document diagnosis, treatment, and medical advice</p>
+    </div>
 
     <!-- Diagnosis Section -->
-    <div class="medical-advice-card">
-      <h3 class="text-lg font-semibold mb-4">Primary Diagnosis</h3>
+    <div class="bg-white border border-gray-200 rounded-lg p-6">
+      <h3 class="text-lg font-medium text-gray-900 mb-4">Primary Diagnosis</h3>
       
-      <div class="field-group">
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Diagnosis *</span>
-          </label>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="form-field">
+          <label class="field-label">Diagnosis *</label>
           <textarea 
             v-model="localMedical.diagnosis"
-            class="textarea textarea-bordered h-24"
+            class="field-textarea"
             placeholder="Enter primary diagnosis..."
+            rows="3"
             required
           ></textarea>
         </div>
         
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">ICD-10 Code (Optional)</span>
-          </label>
+        <div class="form-field">
+          <label class="field-label">ICD-10 Code (Optional)</label>
           <input 
             v-model="localMedical.icd10"
             type="text" 
             placeholder="e.g., J00.9"
-            class="input input-bordered w-full font-mono"
+            class="field-input font-mono"
           />
-          <label class="label">
-            <span class="label-text-alt">
-              <button @click="showICD10Helper" class="link link-primary">
-                🔍 Search ICD-10 codes
-              </button>
-            </span>
-          </label>
+          <button @click="showICD10Helper" class="text-blue-600 hover:text-blue-700 text-sm mt-1">
+            🔍 Search ICD-10 codes
+          </button>
         </div>
       </div>
 
-      <div class="form-control">
-        <label class="label">
-          <span class="label-text">Cause / Etiology *</span>
-        </label>
+      <div class="form-field">
+        <label class="field-label">Cause / Etiology *</label>
         <select 
           v-model="localMedical.cause"
-          class="select select-bordered w-full"
+          class="field-input"
           @change="updateCauseOther"
           required
         >
@@ -66,164 +60,157 @@
           v-model="localMedical.causeOther"
           type="text" 
           placeholder="Please specify the cause"
-          class="input input-bordered w-full mt-2"
+          class="field-input mt-2"
         />
       </div>
     </div>
 
     <!-- Treatment Section -->
-    <div class="medical-advice-card">
-      <h3 class="text-lg font-semibold mb-4">Treatment & Procedures</h3>
+    <div class="bg-white border border-gray-200 rounded-lg p-6">
+      <h3 class="text-lg font-medium text-gray-900 mb-4">Treatment & Procedures</h3>
       
-      <div class="form-control mb-4">
-        <label class="label">
-          <span class="label-text">Treatment Provided</span>
-        </label>
-        <textarea 
-          v-model="localMedical.treatment"
-          class="textarea textarea-bordered h-24"
-          placeholder="Describe treatment provided..."
-        ></textarea>
-      </div>
+      <div class="space-y-4">
+        <div class="form-field">
+          <label class="field-label">Treatment Provided</label>
+          <textarea 
+            v-model="localMedical.treatment"
+            class="field-textarea"
+            placeholder="Describe treatment provided..."
+            rows="3"
+          ></textarea>
+        </div>
 
-      <div class="form-control mb-4">
-        <label class="label">
-          <span class="label-text">Medication Prescribed</span>
-        </label>
-        <textarea 
-          v-model="localMedical.medication"
-          class="textarea textarea-bordered h-20"
-          placeholder="List medications with dosage..."
-        ></textarea>
-      </div>
+        <div class="form-field">
+          <label class="field-label">Medication Prescribed</label>
+          <textarea 
+            v-model="localMedical.medication"
+            class="field-textarea"
+            placeholder="List medications with dosage..."
+            rows="2"
+          ></textarea>
+        </div>
 
-      <div class="form-control">
-        <label class="label">
-          <span class="label-text">Procedures Performed</span>
-        </label>
-        <div class="flex flex-wrap gap-2 mb-2">
-          <label 
-            v-for="procedure in availableProcedures" 
-            :key="procedure"
-            class="label cursor-pointer flex items-center gap-2"
-          >
-            <input 
-              type="checkbox" 
-              :value="procedure"
-              v-model="localMedical.procedures"
-              class="checkbox checkbox-primary checkbox-sm" 
-            />
-            <span class="label-text">{{ procedure }}</span>
-          </label>
+        <div class="form-field">
+          <label class="field-label">Procedures Performed</label>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
+            <label 
+              v-for="procedure in availableProcedures" 
+              :key="procedure"
+              class="flex items-center space-x-2 cursor-pointer"
+            >
+              <input 
+                type="checkbox" 
+                :value="procedure"
+                v-model="localMedical.procedures"
+                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" 
+              />
+              <span class="text-sm text-gray-700">{{ procedure }}</span>
+            </label>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Medical Advice Section -->
-    <div class="medical-advice-card">
-      <h3 class="text-lg font-semibold mb-4">Medical Advice</h3>
+    <div class="bg-white border border-gray-200 rounded-lg p-6">
+      <h3 class="text-lg font-medium text-gray-900 mb-4">Medical Advice</h3>
       
       <div class="space-y-4">
         <!-- Fit to Travel -->
-        <label class="label cursor-pointer justify-start gap-4">
+        <label class="flex items-center space-x-3 cursor-pointer">
           <input 
             type="checkbox" 
             v-model="localMedical.advice.fitToTravel"
-            class="checkbox checkbox-success" 
+            class="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500" 
           />
-          <span class="label-text">✈️ Fit to travel</span>
+          <span class="text-sm text-gray-700">✈️ Fit to travel</span>
         </label>
 
         <!-- Fit to Fly -->
-        <div class="border border-base-300 rounded-lg p-4">
-          <label class="label cursor-pointer justify-start gap-4 mb-2">
+        <div class="border border-gray-200 rounded-lg p-4">
+          <label class="flex items-center space-x-3 cursor-pointer mb-2">
             <input 
               type="checkbox" 
               v-model="localMedical.advice.fitToFly"
-              class="checkbox checkbox-success" 
+              class="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500" 
             />
-            <span class="label-text">🛫 Fit to fly</span>
+            <span class="text-sm text-gray-700">🛫 Fit to fly</span>
           </label>
           
-          <div v-if="!localMedical.advice.fitToFly" class="ml-8">
-            <label class="label">
-              <span class="label-text">Unfit to fly until:</span>
-            </label>
+          <div v-if="!localMedical.advice.fitToFly" class="ml-7">
+            <label class="field-label text-sm">Unfit to fly until:</label>
             <input 
               v-model="localMedical.advice.unfitToFlyUntil"
               type="date" 
-              class="input input-bordered input-sm"
+              class="field-input text-sm"
             />
           </div>
         </div>
 
         <!-- Fit to Work -->
-        <div class="border border-base-300 rounded-lg p-4">
-          <label class="label cursor-pointer justify-start gap-4 mb-2">
+        <div class="border border-gray-200 rounded-lg p-4">
+          <label class="flex items-center space-x-3 cursor-pointer mb-2">
             <input 
               type="checkbox" 
               v-model="localMedical.advice.fitToWork"
-              class="checkbox checkbox-success" 
+              class="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500" 
             />
-            <span class="label-text">💼 Fit to work</span>
+            <span class="text-sm text-gray-700">💼 Fit to work</span>
           </label>
           
-          <div v-if="!localMedical.advice.fitToWork" class="ml-8">
-            <label class="label">
-              <span class="label-text">Unfit to work for (days):</span>
-            </label>
+          <div v-if="!localMedical.advice.fitToWork" class="ml-7 flex items-center space-x-2">
+            <label class="field-label text-sm">Unfit to work for:</label>
             <input 
               v-model="localMedical.advice.unfitToWorkDays"
               type="number" 
               min="1"
               max="365"
-              class="input input-bordered input-sm w-24"
+              class="field-input text-sm w-20"
             />
-            <span class="ml-2 text-sm text-gray-500">days</span>
+            <span class="text-sm text-gray-500">days</span>
           </div>
         </div>
 
         <!-- Hospital Admission -->
-        <label class="label cursor-pointer justify-start gap-4">
+        <label class="flex items-center space-x-3 cursor-pointer">
           <input 
             type="checkbox" 
             v-model="localMedical.advice.hospitalAdmission"
-            class="checkbox checkbox-error" 
+            class="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500" 
           />
-          <span class="label-text">🏥 Hospital admission advised</span>
+          <span class="text-sm text-gray-700">🏥 Hospital admission advised</span>
         </label>
       </div>
     </div>
 
     <!-- Additional Notes -->
-    <div class="medical-advice-card">
-      <h3 class="text-lg font-semibold mb-4">Additional Notes</h3>
+    <div class="bg-white border border-gray-200 rounded-lg p-6">
+      <h3 class="text-lg font-medium text-gray-900 mb-4">Additional Notes</h3>
       
-      <div class="form-control">
-        <label class="label">
-          <span class="label-text">Remarks / Special Instructions</span>
-        </label>
+      <div class="form-field">
+        <label class="field-label">Remarks / Special Instructions</label>
         <textarea 
           v-model="localMedical.remarks"
-          class="textarea textarea-bordered h-24"
+          class="field-textarea"
           placeholder="Any additional notes, follow-up instructions, or special considerations..."
+          rows="3"
         ></textarea>
       </div>
     </div>
 
-    <!-- Attachments Section -->
-    <div class="medical-advice-card">
-      <h3 class="text-lg font-semibold mb-4">Supporting Documents</h3>
+    <!-- Supporting Documents -->
+    <div class="bg-white border border-gray-200 rounded-lg p-6">
+      <h3 class="text-lg font-medium text-gray-900 mb-4">Supporting Documents</h3>
       
       <div class="space-y-4">
-        <div class="flex flex-wrap gap-4">
-          <button @click="capturePhoto" class="btn btn-outline btn-primary">
+        <div class="flex flex-wrap gap-3">
+          <button @click="capturePhoto" class="btn-minimal-outline">
             📷 Take Photo
           </button>
-          <button @click="uploadDocument" class="btn btn-outline btn-secondary">
+          <button @click="uploadDocument" class="btn-minimal-outline">
             📄 Upload Document
           </button>
-          <button @click="attachVitalSigns" class="btn btn-outline btn-accent">
+          <button @click="attachVitalSigns" class="btn-minimal-outline">
             🩺 Attach Vital Signs
           </button>
         </div>
@@ -240,7 +227,7 @@
             <div class="text-xs text-gray-500">{{ attachment.size }}</div>
             <button 
               @click="removeAttachment(index)"
-              class="absolute -top-2 -right-2 btn btn-circle btn-xs btn-error"
+              class="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full text-xs hover:bg-red-600"
             >
               ✕
             </button>
@@ -250,33 +237,65 @@
     </div>
 
     <!-- Validation Summary -->
-    <div class="card bg-warning/10 border border-warning" v-if="validationErrors.length > 0">
-      <div class="card-body">
-        <h4 class="font-bold text-warning">Please complete the following:</h4>
-        <ul class="list-disc list-inside text-sm">
-          <li v-for="error in validationErrors" :key="error" class="text-warning">
-            {{ error }}
-          </li>
-        </ul>
-      </div>
+    <div class="bg-amber-50 border border-amber-200 rounded-lg p-4" v-if="validationErrors.length > 0">
+      <h4 class="font-medium text-amber-800 mb-2">Please complete the following:</h4>
+      <ul class="list-disc list-inside text-sm text-amber-700 space-y-1">
+        <li v-for="error in validationErrors" :key="error">
+          {{ error }}
+        </li>
+      </ul>
     </div>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 
-const props = defineProps({
-  medical: {
-    type: Object,
-    default: () => ({})
-  }
+interface MedicalAdvice {
+  fitToTravel: boolean
+  fitToFly: boolean
+  unfitToFlyUntil: string
+  fitToWork: boolean
+  unfitToWorkDays: string
+  hospitalAdmission: boolean
+}
+
+interface Attachment {
+  type: string
+  name: string
+  size: string
+  url?: string
+}
+
+interface Medical {
+  diagnosis: string
+  icd10: string
+  cause: string
+  causeOther: string
+  treatment: string
+  medication: string
+  procedures: string[]
+  advice: MedicalAdvice
+  remarks: string
+  attachments: Attachment[]
+}
+
+interface Props {
+  medical?: Partial<Medical>
+}
+
+interface Emits {
+  'update:medical': [medical: Medical]
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  medical: () => ({})
 })
 
-const emit = defineEmits(['update:medical'])
+const emit = defineEmits<Emits>()
 
 // Local reactive copy of medical data
-const localMedical = ref({
+const localMedical = ref<Medical>({
   diagnosis: '',
   icd10: '',
   cause: '',
@@ -297,7 +316,7 @@ const localMedical = ref({
   ...props.medical
 })
 
-const availableProcedures = [
+const availableProcedures: string[] = [
   'Physical examination',
   'Vital signs monitoring',
   'Blood pressure check',
@@ -311,8 +330,8 @@ const availableProcedures = [
 ]
 
 // Validation
-const validationErrors = computed(() => {
-  const errors = []
+const validationErrors = computed((): string[] => {
+  const errors: string[] = []
   
   if (!localMedical.value.diagnosis) {
     errors.push('Primary diagnosis is required')
@@ -330,15 +349,15 @@ const validationErrors = computed(() => {
 })
 
 // Methods
-const updateCauseOther = () => {
+const updateCauseOther = (): void => {
   if (localMedical.value.cause !== 'Other') {
     localMedical.value.causeOther = ''
   }
 }
 
-const showICD10Helper = () => {
+const showICD10Helper = (): void => {
   // Mock ICD-10 search - in real app would open a modal or external tool
-  const commonCodes = {
+  const commonCodes: Record<string, string> = {
     'J00.9': 'Acute nasopharyngitis, unspecified',
     'K59.00': 'Constipation, unspecified',
     'R50.9': 'Fever, unspecified',
@@ -357,9 +376,9 @@ const showICD10Helper = () => {
   }
 }
 
-const capturePhoto = () => {
+const capturePhoto = (): void => {
   // Mock photo capture
-  const mockPhoto = {
+  const mockPhoto: Attachment = {
     type: 'photo',
     name: `Photo_${Date.now()}.jpg`,
     size: '2.1 MB',
@@ -368,9 +387,9 @@ const capturePhoto = () => {
   localMedical.value.attachments.push(mockPhoto)
 }
 
-const uploadDocument = () => {
+const uploadDocument = (): void => {
   // Mock document upload
-  const mockDoc = {
+  const mockDoc: Attachment = {
     type: 'document',
     name: `X-ray_${Date.now()}.pdf`,
     size: '1.5 MB',
@@ -379,9 +398,9 @@ const uploadDocument = () => {
   localMedical.value.attachments.push(mockDoc)
 }
 
-const attachVitalSigns = () => {
+const attachVitalSigns = (): void => {
   // Mock vital signs attachment
-  const mockVitals = {
+  const mockVitals: Attachment = {
     type: 'vitals',
     name: `VitalSigns_${Date.now()}.json`,
     size: '0.1 MB',
@@ -390,7 +409,7 @@ const attachVitalSigns = () => {
   localMedical.value.attachments.push(mockVitals)
 }
 
-const getAttachmentIcon = (type) => {
+const getAttachmentIcon = (type: string): string => {
   switch (type) {
     case 'photo': return '📷'
     case 'document': return '📄'
@@ -399,7 +418,7 @@ const getAttachmentIcon = (type) => {
   }
 }
 
-const removeAttachment = (index) => {
+const removeAttachment = (index: number): void => {
   localMedical.value.attachments.splice(index, 1)
 }
 
@@ -416,8 +435,73 @@ watch(
 watch(
   () => props.medical,
   (newMedical) => {
-    Object.assign(localMedical.value, newMedical)
+    if (newMedical) {
+      Object.assign(localMedical.value, newMedical)
+    }
   },
   { immediate: true }
 )
 </script>
+
+<style scoped>
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.field-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.field-input {
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  transition: border-color 0.2s;
+  background-color: white;
+}
+
+.field-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.field-textarea {
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  transition: border-color 0.2s;
+  background-color: white;
+  resize: vertical;
+}
+
+.field-textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.btn-minimal-outline {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  background-color: white;
+  color: #374151;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-minimal-outline:hover {
+  border-color: #3b82f6;
+  color: #3b82f6;
+  background-color: #f8fafc;
+}
+</style>
